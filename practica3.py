@@ -3,6 +3,26 @@ from bs4 import BeautifulSoup
 import urllib
 import mysql.connector as mysql
 
+conexion=mysql.connect(host='localhost',user='root',passwd='',db='datos')
+operacion=conexion.cursor()
+try:
+    operacion.execute("drop table webp;")
+except Exception:
+    pass
+try:
+    operacion.execute("create table webp(pagina VARCHAR(255),estatus int)")
+except Exception:
+    pass
+pag_inicial=input('INGRESE URL:  ')
+try:
+    operacion.execute("insert into webp values('"+pag_inicial+"',0);")
+except mysql.errors.IntegrityError:
+    sys.exit()
+except mysql.errors.DataError:
+    sys.exit()
+conexion.commit()
+conexion.close()
+
 while(1):
     e=""
     i=0
